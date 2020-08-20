@@ -1,7 +1,7 @@
 #!./venv/bin/python python3
 # -*- coding: utf-8 -*-
 
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, render_template, request, session
 from glob import glob
 
 app = Flask(__name__)
