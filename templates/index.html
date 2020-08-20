@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
-<html lang='en'>
+<html lang="en">
     <head>
         <title>SimplzDND</title>
-        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <meta name='Description' content='SimplzDND' />
-        <meta name='theme-color' content='#ffffff' />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="Description" content="SimplzDND" />
+        <meta name="theme-color" content="#ffffff" />
     </head>
     <body>
         <h1>SimplzDND</h1>
@@ -19,9 +19,7 @@
                 <option value="{{ q }}">{{ q.split("/")[-1].split(".")[0] }}</option>
             {%endfor%}
         </select>
-        <canvas id="mapCanvas">
-
-        </canvas>
+        <canvas id="mapCanvas"></canvas>
     </body>
     <script>
         const canvas = document.getElementById("mapCanvas");
@@ -91,17 +89,17 @@
                 if (e.buttons == 1 || e.type == "touchmove") {
                     var ctx = canvas.getContext("2d");
 
-                    ctx.beginPath(); // begin
+                    ctx.beginPath();
 
                     ctx.lineWidth = 5;
                     ctx.lineCap = "round";
                     ctx.strokeStyle = "#000000";
 
-                    ctx.moveTo(pos.x, pos.y); // from
-                    setPosition(e, 'writing');
-                    ctx.lineTo(pos.x, pos.y); // to
+                    ctx.moveTo(pos.x, pos.y);
+                    setPosition(e, "writing");
+                    ctx.lineTo(pos.x, pos.y);
 
-                    ctx.stroke(); // draw it!
+                    ctx.stroke();
                 }
             }
         }
