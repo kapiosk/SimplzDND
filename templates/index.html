@@ -11,5 +11,119 @@
         <h1>SimplzDND</h1>
         <a href="https://www.dndbeyond.com/campaigns/1332261">Lost Mine of Phandelver</a>
         <a href="https://www.dndbeyond.com/my-encounters">My Encounters</a>
+        <select id="mapSelect">
+            {%for q in player_images%}
+                <option value="{{ q }}">{{ q.split("/")[-1].split(".")[0] }}</option>
+            {%endfor%}
+            {%for q in dm_images%}
+                <option value="{{ q }}">{{ q.split("/")[-1].split(".")[0] }}</option>
+            {%endfor%}
+        </select>
+        <canvas id="mapCanvas">
+
+        </canvas>
     </body>
+    <script>
+        const canvas = document.getElementById("mapCanvas");
+        document.getElementById("mapSelect").onchange = function () {
+            var img = new Image();
+            img.onload = function () {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+            img.src = this.value;
+        };
+
+        var pos = { x: 0, y: 0, xOffset: 0, yOffset: 0 };
+        var previousItem = 0;
+        var previousItemCount = 0;
+
+        function offset(el) {
+            var rect = el.getBoundingClientRect();
+            return { top: rect.top, left: rect.left };
+        }
+
+        function setCanvas(me, colour) {
+            if (colour) {
+                var ctx = canvas.getContext("2d");
+                ctx.beginPath();
+                ctx.rect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = colour;
+                ctx.fill();
+            }
+            var off = offset(canvas);
+            pos.xOffset = off.left;
+            pos.yOffset = off.top;
+        }
+
+        function setPosition(e, command) {
+            if (e.target.tagName == "CANVAS") {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                var evnt = e;
+
+                if (e.touches && e.touches.length > 0) {
+                    evnt = e.touches[0];
+                }
+
+                pos.x = evnt.clientX - pos.xOffset;
+                pos.y = evnt.clientY - pos.yOffset;
+
+                if (command === undefined) {
+                    if (previousItem == e.target) {
+                        previousItemCount += 1;
+                    } else {
+                        previousItemCount = 0;
+                    }
+                    if (previousItemCount == 1) setCanvas(e.target);
+                    previousItem = e.target;
+                }
+            }
+        }
+
+        function draw(e) {
+            if (canvas && e.target.tagName == "CANVAS") {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                if (e.buttons == 1 || e.type == "touchmove") {
+                    var ctx = canvas.getContext("2d");
+
+                    ctx.beginPath(); // begin
+
+                    ctx.lineWidth = 5;
+                    ctx.lineCap = "round";
+                    ctx.strokeStyle = "#000000";
+
+                    ctx.moveTo(pos.x, pos.y); // from
+                    setPosition(e, 'writing');
+                    ctx.lineTo(pos.x, pos.y); // to
+
+                    ctx.stroke(); // draw it!
+                }
+            }
+        }
+
+        function clearCanvas() {
+            setCanvas(canvas, "white");
+            return false;
+        }
+
+        function saveCanvas(e) {
+            if (e.target.tagName == "CANVAS") {
+                setPosition(e);
+                console.log(canvas.toDataURL());
+            }
+        }
+
+        document.addEventListener("mousemove", draw);
+        document.addEventListener("mousedown", setPosition);
+        document.addEventListener("mouseup", saveCanvas);
+
+        document.addEventListener("touchmove", draw, { passive: false });
+        document.addEventListener("touchstart", setPosition, { passive: false });
+        document.addEventListener("touchend", saveCanvas), { passive: false };
+    </script>
 </html>

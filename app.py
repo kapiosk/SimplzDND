@@ -1,13 +1,23 @@
+#!./venv/bin/python python3
+# -*- coding: utf-8 -*-
+
 from flask import Flask, redirect, render_template, request, session, url_for
-from os import path
+from glob import glob
 
 app = Flask(__name__)
 app.secret_key = b'isthisgoodenought?'
 app.SESSION_COOKIE_SECURE = True
 
 @app.route('/')
-def hello():
-    return render_template('index.html')
+def index():
+    dm_images = []
+    for img in glob('static/DM_Maps/*'):
+        dm_images.append(img)
+    player_images = []
+    for img in glob('static/Player_Maps/*'):
+        player_images.append(img)
+
+    return render_template('index.html', player_images=player_images, dm_images=dm_images)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
