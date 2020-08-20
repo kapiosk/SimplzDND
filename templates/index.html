@@ -23,19 +23,19 @@
     </body>
     <script>
         const canvas = document.getElementById("mapCanvas");
+
         document.getElementById("mapSelect").onchange = function () {
             var img = new Image();
             img.onload = function () {
                 canvas.width = img.width;
                 canvas.height = img.height;
                 canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+                setCanvas();
             };
             img.src = this.value;
         };
 
-        var pos = { x: 0, y: 0, xOffset: 0, yOffset: 0 };
-        var previousItem = 0;
-        var previousItemCount = 0;
+        const pos = { x: 0, y: 0, xOffset: 0, yOffset: 0 };
 
         function offset(el) {
             var rect = el.getBoundingClientRect();
@@ -68,16 +68,6 @@
 
                 pos.x = evnt.clientX - pos.xOffset;
                 pos.y = evnt.clientY - pos.yOffset;
-
-                if (command === undefined) {
-                    if (previousItem == e.target) {
-                        previousItemCount += 1;
-                    } else {
-                        previousItemCount = 0;
-                    }
-                    if (previousItemCount == 1) setCanvas(e.target);
-                    previousItem = e.target;
-                }
             }
         }
 
@@ -120,9 +110,7 @@
         document.addEventListener("touchstart", setPosition, { passive: false });
         document.addEventListener("touchend", setPosition), { passive: false };
 
-        window.onscroll = function(){
-            
-        }
-        window.onresize = window.onscroll;
+        window.onscroll = setCanvas;
+        window.onresize = setCanvas;
     </script>
 </html>
