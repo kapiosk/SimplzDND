@@ -118,10 +118,10 @@
 
         document.addEventListener("mousemove", draw);
         document.addEventListener("mousedown", setPosition);
-        document.addEventListener("mouseup", saveCanvas);
+        document.addEventListener("mouseup", setPosition);
 
         document.addEventListener("touchmove", draw, { passive: false });
         document.addEventListener("touchstart", setPosition, { passive: false });
-        document.addEventListener("touchend", saveCanvas), { passive: false };
+        document.addEventListener("touchend", setPosition), { passive: false };
     </script>
 </html>
