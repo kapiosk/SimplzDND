@@ -119,5 +119,10 @@
         document.addEventListener("touchmove", draw, { passive: false });
         document.addEventListener("touchstart", setPosition, { passive: false });
         document.addEventListener("touchend", setPosition), { passive: false };
+
+        window.onscroll = function(){
+            
+        }
+        window.onresize = window.onscroll;
     </script>
 </html>
