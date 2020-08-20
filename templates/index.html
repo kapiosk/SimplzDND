@@ -109,11 +109,8 @@
             return false;
         }
 
-        function saveCanvas(e) {
-            if (e.target.tagName == "CANVAS") {
-                setPosition(e);
-                console.log(canvas.toDataURL());
-            }
+        function saveCanvas() {
+            console.log(canvas.toDataURL());
         }
 
         document.addEventListener("mousemove", draw);
