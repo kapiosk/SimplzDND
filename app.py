@@ -78,7 +78,7 @@ def room(room):
 
 if __name__ == '__main__':
     app = socketio.Middleware(sio, app)
-    if False:
+    if True:
         eventlet.wsgi.server(eventlet.listen(('', 8080)), app)
     else:
         # openssl req -x509 -sha256 -nodes -days 7 -newkey rsa:2048 -keyout privateKey.key -out certificate.crt
