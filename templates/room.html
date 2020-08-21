@@ -12,9 +12,6 @@
             }
         </style>
     </head>
-    <script type="text/javascript">
-        var room = '{{room}}';
-    </script>
     <body>
         <h1>Realtime communication with WebRTC</h1>
 
@@ -35,7 +32,7 @@
 
         <script>
             'use strict';
-
+            var room = '{{room}}';
             var isChannelReady = false;
             var isInitiator = false;
             var isStarted = false;
@@ -50,9 +47,13 @@
 
             var pcConfig = {
                 'iceServers': [{
-                    'urls': 'stun:stun.l.google.com:19302'
+                    'urls': 'stun:stun1.l.google.com:19302'
+                },
+                {
+                    'urls': 'turn:turn01.hubl.in?transport=udp'
                 }]
             };
+            //https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
 
             // Set up audio and video regardless of what devices are present.
             var sdpConstraints = {
@@ -157,6 +158,8 @@
             };
 
             console.log('Getting user media with constraints', constraints);
+
+            requestTurn();
 
             function maybeStart() {
                 console.log('>>>>>>> maybeStart() ', isStarted, localStream, isChannelReady);
@@ -265,7 +268,7 @@
                 //trace('Failed to create session description: ' + error.toString());
             }
 
-            function requestTurn(turnURL) {
+            function requestTurn() {
                 var turnExists = false;
                 for (var i in pcConfig.iceServers) {
                     if (pcConfig.iceServers[i].urls.substr(0, 5) === 'turn:') {
@@ -273,24 +276,6 @@
                         turnReady = true;
                         break;
                     }
-                }
-                if (!turnExists) {
-                    console.log('Getting TURN server from ', turnURL);
-                    // No TURN server. Get one from computeengineondemand.appspot.com:
-                    var xhr = new XMLHttpRequest();
-                    xhr.onreadystatechange = function () {
-                        if (xhr.readyState === 4 && xhr.status === 200) {
-                            var turnServer = JSON.parse(xhr.responseText);
-                            console.log('Got TURN server: ', turnServer);
-                            pcConfig.iceServers.push({
-                                'url': 'turn:' + turnServer.username + '@' + turnServer.turn,
-                                'credential': turnServer.password
-                            });
-                            turnReady = true;
-                        }
-                    };
-                    xhr.open('GET', turnURL, true);
-                    xhr.send();
                 }
             }
 
