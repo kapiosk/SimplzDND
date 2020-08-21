@@ -4,6 +4,10 @@
 from flask import Flask, render_template, request, session
 from glob import glob
 
+# https://pypi.org/project/Flask-JWT/
+# https://pypi.org/project/Flask-SocketIO/
+# https://github.com/nanomosfet/WebRTC-Flask-server/tree/master/webRTCserver
+
 app = Flask(__name__)
 app.secret_key = b'isthisgoodenought?'
 app.SESSION_COOKIE_SECURE = True
