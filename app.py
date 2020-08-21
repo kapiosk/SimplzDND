@@ -68,9 +68,12 @@ def create_or_join(sid, data):
     print(sid, data, len(connected_particpants[data]))
 
 
-@app.route('/<room>')
+@app.route('/room/<room>')
 def room(room):
-    return render_template('index.html', room=room)
+    return render_template('room.html', room=room)
 
 if __name__ == '__main__':
-    sio.run(app, host='0.0.0.0', port=5000)
+    if True:
+        sio.run(app, host='0.0.0.0', port=5000)
+    else:
+        sio.run(app, host='0.0.0.0', port=5000, ssl_context='adhoc')

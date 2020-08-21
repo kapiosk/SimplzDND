@@ -1,5 +1,7 @@
 autopep8==1.5.4
+cffi==1.14.2
 click==7.1.2
+cryptography==3.0
 Flask==1.1.2
 Flask-JWT==0.3.2
 Flask-SocketIO==4.3.1
@@ -8,7 +10,9 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 pycodestyle==2.6.0
+pycparser==2.20
 PyJWT==1.4.2
+pyOpenSSL==19.1.0
 python-engineio==3.13.2
 python-socketio==4.6.0
 six==1.15.0
