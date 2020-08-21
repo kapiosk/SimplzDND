@@ -6,12 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="Description" content="SimplzDND" />
         <meta name="theme-color" content="#ffffff" />
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
         <h1>SimplzDND</h1>
         <a href="https://www.dndbeyond.com/campaigns/1332261">Lost Mine of Phandelver</a>
         <a href="https://www.dndbeyond.com/my-encounters">My Encounters</a>
         <select id="mapSelect">
+                <option value="clear">Whiteboard</option>
             {%for q in player_images%}
                 <option value="{{ q }}">{{ q.split("/")[-1].split(".")[0] }}</option>
             {%endfor%}
@@ -25,14 +27,18 @@
         const canvas = document.getElementById("mapCanvas");
 
         document.getElementById("mapSelect").onchange = function () {
-            var img = new Image();
-            img.onload = function () {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-                setCanvas();
-            };
-            img.src = this.value;
+            if (this.value=="clear") {
+                clearCanvas();
+            } else {
+                var img = new Image();
+                img.onload = function () {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+                    setCanvas();
+                };
+                img.src = this.value;
+            }
         };
 
         const pos = { x: 0, y: 0, xOffset: 0, yOffset: 0 };

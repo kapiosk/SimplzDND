@@ -12,7 +12,6 @@ import socketio
 app = Flask(__name__)
 app.secret_key = b'isthisgoodenought?'
 app.SESSION_COOKIE_SECURE = True
-# sio = SocketIO(app)
 sio = socketio.Server()
 
 connected_particpants = {}
@@ -45,7 +44,8 @@ def messgage(sid, data):
 @sio.on('disconnect', namespace='/')
 def disconnect(sid):
     write_log("Received Disconnect message from %s" % sid)
-    for room, clients in connected_particpants.iteritems():
+    for room in connected_particpants:
+        clients = connected_particpants[room]
         try:
             clients.remove(sid)
             write_log("Removed %s from %s \n list of left participants is %s" % (
@@ -65,9 +65,9 @@ def create_or_join(sid, data):
     numClients = len(connected_particpants[data])
     if numClients == 1:
         sio.emit('created', data)
-    elif numClients > 2:
+    elif numClients > 20:
         sio.emit('full')
-    elif numClients == 2:
+    else:
         sio.emit('joined')
         sio.emit('join')
     print(sid, data, len(connected_particpants[data]))
