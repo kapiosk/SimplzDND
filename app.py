@@ -32,12 +32,12 @@ def write_log(s):
         f.write('time: %s Action: %s \n' % (str(datetime.datetime.now()), s))
 
 
-@sio.on('message', namespace='/')
+@sio.on('message', namespace='/room')
 def messgage(sid, data):
     sio.emit('message', data=data)
 
 
-@sio.on('disconnect', namespace='/')
+@sio.on('disconnect', namespace='/room')
 def disconnect(sid):
     write_log("Received Disconnect message from %s" % sid)
     for room, clients in connected_particpants.iteritems():
@@ -50,7 +50,7 @@ def disconnect(sid):
                 sid, room, clients))
 
 
-@sio.on('create or join', namespace='/')
+@sio.on('create or join', namespace='/room')
 def create_or_join(sid, data):
     sio.enter_room(sid, data)
     try:
