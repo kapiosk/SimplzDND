@@ -46,11 +46,13 @@
             var chatlog = document.querySelector('#chatlog');
 
             var pcConfig = {
-                'iceServers': [{
-                    'urls': 'stun:stun1.l.google.com:19302'
+                iceServers: [{
+                    url: 'stun:stun1.l.google.com:19302'
                 },
                 {
-                    'urls': 'turn:turn01.hubl.in?transport=udp'
+                    url: 'turn:numb.viagenie.ca',
+                    credential: 'muazkh',
+                    username: 'webrtc@live.com'
                 }]
             };
             //https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
@@ -134,14 +136,14 @@
             var localVideo = document.querySelector('#localVideo');
             var remoteVideo = document.querySelector('#remoteVideo');
 
-            // navigator.mediaDevices.getUserMedia({
-            //     audio: true,
-            //     video: true
-            // })
-            //     .then(gotStream)
-            //     .catch(function (e) {
-            //         alert('getUserMedia() error: ' + e.name);
-            //     });
+            navigator.mediaDevices.getUserMedia({
+                audio: false,
+                video: false
+            })
+            .then(function(s){console.log(1)})
+            .catch(function (e) {
+                alert('getUserMedia() error: ' + e.name);
+            });
 
             function gotStream(stream) {
                 console.log('Adding local stream.');
@@ -158,8 +160,6 @@
             };
 
             console.log('Getting user media with constraints', constraints);
-
-            requestTurn();
 
             function maybeStart() {
                 console.log('>>>>>>> maybeStart() ', isStarted, localStream, isChannelReady);
@@ -266,17 +266,6 @@
 
             function onCreateSessionDescriptionError(error) {
                 //trace('Failed to create session description: ' + error.toString());
-            }
-
-            function requestTurn() {
-                var turnExists = false;
-                for (var i in pcConfig.iceServers) {
-                    if (pcConfig.iceServers[i].urls.substr(0, 5) === 'turn:') {
-                        turnExists = true;
-                        turnReady = true;
-                        break;
-                    }
-                }
             }
 
             function handleRemoteStreamAdded(event) {
