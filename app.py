@@ -3,15 +3,19 @@
 
 from flask import Flask, render_template, request, session
 from glob import glob
-from flask_socketio import SocketIO
 import datetime
+
+import eventlet
+import eventlet.wsgi
+import socketio
 
 # https://github.com/nanomosfet/WebRTC-Flask-server/tree/master/webRTCserver
 
 app = Flask(__name__)
 app.secret_key = b'isthisgoodenought?'
 app.SESSION_COOKIE_SECURE = True
-sio = SocketIO(app)
+# sio = SocketIO(app)
+sio = socketio.Server()
 
 connected_particpants = {}
 
@@ -73,10 +77,13 @@ def room(room):
     return render_template('room.html', room=room)
 
 if __name__ == '__main__':
-    if True:
-        sio.run(app, host='0.0.0.0', port=5000)
+    app = socketio.Middleware(sio, app)
+    if False:
+        eventlet.wsgi.server(eventlet.listen(('', 8080)), app)
     else:
-        sio.run(app, host='0.0.0.0', port=5000, ssl_context='adhoc')
-        # openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
-        # sio.run(app, host='0.0.0.0', port=5000, ssl_context='adhoc', ssl_context = ('cert.pem', 'key.pem'))
-
+        # openssl req -x509 -sha256 -nodes -days 7 -newkey rsa:2048 -keyout privateKey.key -out certificate.crt
+        eventlet.wsgi.server(eventlet.wrap_ssl(
+            eventlet.listen(('', 8080)),
+            certfile='certs/certificate.crt',
+            keyfile='certs/privateKey.key',
+            server_side=True), app)
