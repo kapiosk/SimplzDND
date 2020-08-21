@@ -4,12 +4,10 @@
 from flask import Flask, render_template, request, session
 from glob import glob
 import datetime
-
 import eventlet
 import eventlet.wsgi
 import socketio
 
-# https://github.com/nanomosfet/WebRTC-Flask-server/tree/master/webRTCserver
 
 app = Flask(__name__)
 app.secret_key = b'isthisgoodenought?'
@@ -29,6 +27,9 @@ def index():
         player_images.append(img)
 
     return render_template('index.html', player_images=player_images, dm_images=dm_images)
+
+# https://pfertyk.me/2020/03/webrtc-a-working-example/
+# https://github.com/nanomosfet/WebRTC-Flask-server/tree/master/webRTCserver
 
 
 def write_log(s):
