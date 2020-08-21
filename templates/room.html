@@ -135,8 +135,8 @@
             var remoteVideo = document.querySelector('#remoteVideo');
 
             navigator.mediaDevices.getUserMedia({
-                audio: true,
-                video: true
+                audio: false,
+                video: false
             })
                 .then(gotStream)
                 .catch(function (e) {

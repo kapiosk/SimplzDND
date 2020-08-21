@@ -36,12 +36,12 @@ def write_log(s):
         f.write('time: %s Action: %s \n' % (str(datetime.datetime.now()), s))
 
 
-@sio.on('message', namespace='/room')
+@sio.on('message', namespace='/')
 def messgage(sid, data):
     sio.emit('message', data=data)
 
 
-@sio.on('disconnect', namespace='/room')
+@sio.on('disconnect', namespace='/')
 def disconnect(sid):
     write_log("Received Disconnect message from %s" % sid)
     for room, clients in connected_particpants.iteritems():
@@ -54,7 +54,7 @@ def disconnect(sid):
                 sid, room, clients))
 
 
-@sio.on('create or join', namespace='/room')
+@sio.on('create or join', namespace='/')
 def create_or_join(sid, data):
     sio.enter_room(sid, data)
     try:
@@ -78,7 +78,7 @@ def room(room):
 
 if __name__ == '__main__':
     app = socketio.Middleware(sio, app)
-    if True:
+    if False:
         eventlet.wsgi.server(eventlet.listen(('', 8080)), app)
     else:
         # openssl req -x509 -sha256 -nodes -days 7 -newkey rsa:2048 -keyout privateKey.key -out certificate.crt
