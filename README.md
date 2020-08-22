@@ -3,7 +3,7 @@
 ## Cloning & initial setup
 
 ```bash
-git@github.com:kapiosk/SimplzDND.git
+git clone git@github.com:kapiosk/SimplzDND.git
 cd SimplzDND
 python3 -m venv venv
 source venv/bin/activate
