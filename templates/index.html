@@ -12,6 +12,7 @@
         <link rel="icon" type="image/png" href="PH/firefox-general-16-16.png">
         <link rel="apple-touch-icon" href="PH/firefox-general-256-256.png">
         <style>
+            body { overflow: hidden; /* Hide scrollbars */ }
             /* Simple dashboard grid CSS */
 
             /* Assign grid instructions to our parent grid container */
@@ -83,7 +84,12 @@
                             {%endfor%}
                         </select>
                     </li>
-                    <li class="sidenav__list-item">Dpad to replace v/h scroll</li>
+                    <li class="sidenav__list-item">
+                        <button id="dLeft">&#8592;</button>
+                        <button id="dUp">&#8593;</button>
+                        <button id="dRight">&#8594;</button>
+                        <button id="dDown">&#8595;</button>
+                    </li>
                 </ul>
             </aside>
             <main class="main">
@@ -187,6 +193,11 @@
 
         window.onscroll = setCanvas;
         window.onresize = setCanvas;
+
+        document.getElementById('dLeft').onclick = function () {window.scrollBy(-10, 0)};
+        document.getElementById('dUp').onclick = function () {window.scrollBy(0, -10)};
+        document.getElementById('dRight').onclick = function () {window.scrollBy(10, 0)};
+        document.getElementById('dDown').onclick = function () {window.scrollBy(0, 10)};
 
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
