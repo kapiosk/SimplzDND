@@ -7,21 +7,86 @@
         <meta name="Description" content="SimplzDND" />
         <meta name="theme-color" content="#ffffff" />
         <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+        <style>
+            /* Simple dashboard grid CSS */
+
+            /* Assign grid instructions to our parent grid container */
+            .grid-container {
+                display: grid;
+                grid-template-columns: 240px 1fr;
+                grid-template-rows: 50px 1fr 50px;
+                grid-template-areas:
+                    "sidenav header"
+                    "sidenav main"
+                    "sidenav footer";
+                height: 100vh;
+            }
+
+            /* Give every child element its grid name */
+            .header {
+                grid-area: header;
+                background-color: #648ca6;
+            }
+
+            .sidenav {
+                grid-area: sidenav;
+                background-color: #a5b2e0;
+            }
+
+            .main {
+                grid-area: main;
+                background-color: #8fd4d9;
+            }
+
+            .footer {
+                grid-area: footer;
+                background-color: #648ca6;
+            }
+
+            .sidenav__list {
+                padding: 0;
+                margin-top: 85px;
+                list-style-type: none;
+            }
+
+            .sidenav__list-item {
+                padding: 20px 20px 20px 40px;
+                color: #ddd;
+            }
+
+            .sidenav__list-item:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body>
-        <h1>SimplzDND</h1>
-        <a href="https://www.dndbeyond.com/campaigns/1332261">Lost Mine of Phandelver</a>
-        <a href="https://www.dndbeyond.com/my-encounters">My Encounters</a>
-        <select id="mapSelect">
-                <option value="clear">Whiteboard</option>
-            {%for q in player_images%}
-                <option value="{{ q }}">{{ q.split("/")[-1].split(".")[0] }}</option>
-            {%endfor%}
-            {%for q in dm_images%}
-                <option value="{{ q }}">{{ q.split("/")[-1].split(".")[0] }}</option>
-            {%endfor%}
-        </select>
-        <canvas id="mapCanvas"></canvas>
+        <div class="grid-container">
+            <header class="header"></header>
+            <aside class="sidenav">
+                <ul class="sidenav__list">
+                    <li class="sidenav__list-item"><h1>SimplzDND</h1></li>
+                    <li class="sidenav__list-item"><a href="https://www.dndbeyond.com/campaigns/1332261">Lost Mine of Phandelver</a></li>
+                    <li class="sidenav__list-item"><a href="https://www.dndbeyond.com/my-encounters">My Encounters</a></li>
+                    <li class="sidenav__list-item">
+                        <select id="mapSelect">
+                            <option value="clear">Whiteboard</option>
+                            {%for q in player_images%}
+                            <option value="{{ q }}">{{ q.split("/")[-1].split(".")[0] }}</option>
+                            {%endfor%}
+                            {%for q in dm_images%}
+                            <option value="{{ q }}">{{ q.split("/")[-1].split(".")[0] }}</option>
+                            {%endfor%}
+                        </select>
+                    </li>
+                    <li class="sidenav__list-item">Dpad to replace v/h scroll</li>
+                </ul>
+            </aside>
+            <main class="main">
+                <canvas id="mapCanvas"></canvas>
+            </main>
+            <footer class="footer"></footer>
+        </div>
     </body>
     <script>
         const canvas = document.getElementById("mapCanvas");
