@@ -14,5 +14,7 @@ deactivate
 ## Run
 
 ```bash
+source venv/bin/activate
 python app.py
+deactivate
 ```
