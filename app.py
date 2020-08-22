@@ -82,12 +82,17 @@ if __name__ == '__main__':
     if True:
         eventlet.wsgi.server(eventlet.listen(('', 8080)), app)
     else:
-        # openssl genrsa 2048 > server.key
-        # openssl req -new -x509 -nodes -sha1 -days 365 -key server.key > server.cert
+        # openssl req -newkey rsa:4096 \
+        # -x509 \
+        # -sha256 \
+        # -days 3650 \
+        # -nodes \
+        # -out example.crt \
+        # -keyout example.key \
+        # -subj "/C=CY/ST=Nicosia/L=Nicosia/O=Potato/OU=IT Department/CN=localhost"
 
-        # openssl req -x509 -sha256 -nodes -days 7 -newkey rsa:2048 -keyout privateKey.key -out certificate.crt
         eventlet.wsgi.server(eventlet.wrap_ssl(
-            eventlet.listen(('', 8080)),
-            certfile='certs/certificate.crt',
-            keyfile='certs/privateKey.key',
+            eventlet.listen(('127.0.0.1', 8080)),
+            certfile='certs/example.crt',
+            keyfile='certs/example.key',
             server_side=True), app)
