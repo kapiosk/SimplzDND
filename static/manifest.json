@@ -1,0 +1,45 @@
+{
+    "name": "SimplzDND",
+    "short_name": "SimplzDND",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "Scope": "/",
+    "start_url": "PH",
+    "icons": [
+        {
+            "src": "firefox-marketplace-512-512.png",
+            "sizes": "512x512"
+        },
+        {
+            "src": "firefox-general-256-256.png",
+            "sizes": "256x256"
+        },
+        {
+            "src": "firefox-general-128-128.png",
+            "sizes": "128x128"
+        },
+        {
+            "src": "firefox-general-90-90.png",
+            "sizes": "90x90"
+        },
+        {
+            "src": "firefox-general-64-64.png",
+            "sizes": "64x64"
+        },
+        {
+            "src": "firefox-general-48-48.png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "firefox-general-32-32.png",
+            "sizes": "32x32"
+        },
+        {
+            "src": "firefox-general-16-16.png",
+            "sizes": "16x16"
+        }
+    ],
+    "lang": "en",
+    "splash_pages": null
+}
