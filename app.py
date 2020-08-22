@@ -1,13 +1,13 @@
 #!./venv/bin/python python3
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, request, session
-from glob import glob
 import datetime
+from glob import glob
+
 import eventlet
 import eventlet.wsgi
 import socketio
-
+from flask import Flask, render_template, request, session
 
 app = Flask(__name__)
 app.secret_key = b'isthisgoodenought?'
