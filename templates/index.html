@@ -12,28 +12,26 @@
         <link rel="icon" type="image/png" href="PH/firefox-general-16-16.png">
         <link rel="apple-touch-icon" href="PH/firefox-general-256-256.png">
         <style>
-            body { overflow: hidden; /* Hide scrollbars */ }
+            body { 
+                overflow: hidden;
+                margin: 0;
+            }
+            
             /* Simple dashboard grid CSS */
 
             /* Assign grid instructions to our parent grid container */
             .grid-container {
                 display: grid;
                 grid-template-columns: 240px 1fr;
-                grid-template-rows: 50px 1fr 50px;
-                grid-template-areas:
-                    "sidenav header"
-                    "sidenav main"
-                    "sidenav footer";
+                grid-template-rows: 1fr;
+                grid-template-areas: "sidenav main";
                 height: 100vh;
             }
 
             /* Give every child element its grid name */
-            .header {
-                grid-area: header;
-                background-color: #648ca6;
-            }
 
             .sidenav {
+                width: 240px;
                 position: fixed;
                 grid-area: sidenav;
                 background-color: #a5b2e0;
@@ -42,11 +40,6 @@
             .main {
                 grid-area: main;
                 background-color: #8fd4d9;
-            }
-
-            .footer {
-                grid-area: footer;
-                background-color: #648ca6;
             }
 
             .sidenav__list {
@@ -68,7 +61,6 @@
     </head>
     <body>
         <div class="grid-container">
-            <header class="header"></header>
             <aside class="sidenav">
                 <ul class="sidenav__list">
                     <li class="sidenav__list-item"><h1>SimplzDND</h1></li>
@@ -91,12 +83,21 @@
                         <button id="dRight">&#8594;</button>
                         <button id="dDown">&#8595;</button>
                     </li>
+                    {%for q in player_images%}
+                        <li class="sidenav__list-item"></li>
+                            <a href="{{ q }}" target="_blank">{{ q.split("/")[-1].split(".")[0] }}</a>
+                        </li>
+                    {%endfor%}
+                    {%for q in dm_images%}
+                        <li class="sidenav__list-item"></li>
+                            <a href="{{ q }}" target="_blank">{{ q.split("/")[-1].split(".")[0] }}</a>
+                        </li>
+                    {%endfor%}
                 </ul>
             </aside>
             <main class="main">
-                <canvas id="mapCanvas"></canvas>
+                <canvas id="mapCanvas" width="1000" height="700"></canvas>
             </main>
-            <footer class="footer"></footer>
         </div>
     </body>
     <script>
@@ -108,9 +109,12 @@
             } else {
                 var img = new Image();
                 img.onload = function () {
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+                    var ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
+                    var width = ratio * img.width;
+                    var height = ratio * img.height;
+                    canvas.width = width;
+                    canvas.height = height;
+                    canvas.getContext("2d").drawImage(img, 0, 0, width, height);
                     setCanvas();
                 };
                 img.src = this.value;
@@ -195,10 +199,18 @@
         window.onscroll = setCanvas;
         window.onresize = setCanvas;
 
-        document.getElementById('dLeft').onclick = function () {window.scrollBy(-10, 0)};
-        document.getElementById('dUp').onclick = function () {window.scrollBy(0, -10)};
-        document.getElementById('dRight').onclick = function () {window.scrollBy(10, 0)};
-        document.getElementById('dDown').onclick = function () {window.scrollBy(0, 10)};
+        document.getElementById('dLeft').onclick = function () { this.blur(); window.scrollBy(-300, 0)};
+        document.getElementById('dUp').onclick = function () { this.blur(); window.scrollBy(0, -300)};
+        document.getElementById('dRight').onclick = function () { this.blur(); window.scrollBy(300, 0)};
+        document.getElementById('dDown').onclick = function () { this.blur(); window.scrollBy(0, 300)};
+
+        // var scrollTimer;
+        // document.getElementById('dDown').addEventListener("touchstart", function(){
+        //     scrollTimer = setInterval(function () { window.scrollBy(0, 100); }, 100);
+        // }, { passive: false });
+        // document.getElementById('dDown').addEventListener("touchend", function () {
+        //     clearInterval(scrollTimer);
+        // }, { passive: false });
 
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
