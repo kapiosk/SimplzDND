@@ -62,6 +62,8 @@
                 position: absolute;
                 z-index: 1;
                 background-color: white;
+                width: 32px;
+                height: 32px;
             }
 
             #pawnName {
@@ -70,6 +72,7 @@
         </style>
     </head>
     <body>
+        <div id="pawnHolder"></div>
         <div class="grid-container">
             <aside class="sidenav">
                 <ul class="sidenav__list">
@@ -227,7 +230,7 @@
             let div = document.createElement("div");
             div.classList.add("pawn");
             div.innerHTML = document.getElementById("pawnName").value;
-            document.body.insertBefore(div, document.body.firstChild);
+            document.getElementById("pawnHolder").appendChild(div);
             SP();
         }
 
