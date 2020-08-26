@@ -57,9 +57,15 @@
                 background-color: rgba(255, 255, 255, 0.2);
                 cursor: pointer;
             }
+
+            .pawn {
+                position: absolute;
+                z-index: 1;
+            }
         </style>
     </head>
     <body>
+        <div class="pawn">A</div>
         <div class="grid-container">
             <aside class="sidenav">
                 <ul class="sidenav__list">
@@ -132,7 +138,7 @@
             pos.yOffset = off.top;
         }
 
-        function setPosition(e, command) {
+        function setPosition(e) {
             if (e.target.tagName == "CANVAS") {
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -167,6 +173,7 @@
                     ctx.lineTo(pos.x, pos.y);
 
                     ctx.stroke();
+                    ctx.closePath()
                 }
             }
         }
@@ -179,39 +186,62 @@
             console.log(canvas.toDataURL());
         }
 
-        document.addEventListener("mousemove", draw);
-        document.addEventListener("mousedown", setPosition);
-        document.addEventListener("mouseup", setPosition);
+        // document.addEventListener("mousemove", draw);
+        // document.addEventListener("mousedown", setPosition);
+        // document.addEventListener("mouseup", setPosition);
 
-        document.addEventListener("touchmove", draw, { passive: false });
-        document.addEventListener("touchstart", setPosition, { passive: false });
-        document.addEventListener("touchend", setPosition), { passive: false };
+        // document.addEventListener("touchmove", draw, { passive: false });
+        // document.addEventListener("touchstart", setPosition, { passive: false });
+        // document.addEventListener("touchend", setPosition), { passive: false };
 
         window.onscroll = setCanvas;
         window.onresize = setCanvas;
 
-        document.getElementById('dLeft').onclick = function () {this.blur(); window.scrollBy(-300, 0)};
-        document.getElementById('dUp').onclick = function () {this.blur(); window.scrollBy(0, -300)};
-        document.getElementById('dRight').onclick = function () {this.blur(); window.scrollBy(300, 0)};
-        document.getElementById('dDown').onclick = function () {this.blur(); window.scrollBy(0, 300)};
+        document.getElementById("dLeft").onclick = function () {this.blur(); window.scrollBy(-300, 0)};
+        document.getElementById("dUp").onclick = function () {this.blur(); window.scrollBy(0, -300)};
+        document.getElementById("dRight").onclick = function () {this.blur(); window.scrollBy(300, 0)};
+        document.getElementById("dDown").onclick = function () {this.blur(); window.scrollBy(0, 300)};
 
-        document.getElementById('openNew').onclick = function () {
+        document.getElementById("openNew").onclick = function () {
             this.blur();
             window.open(document.getElementById("mapSelect").value, "_blank");
         };
     
         // var scrollTimer;
-        // document.getElementById('dDown').addEventListener("touchstart", function(){
+        // document.getElementById("dDown").addEventListener("touchstart", function(){
         //     scrollTimer = setInterval(function () { window.scrollBy(0, 100); }, 100);
         // }, { passive: false });
-        // document.getElementById('dDown').addEventListener("touchend", function () {
+        // document.getElementById("dDown").addEventListener("touchend", function () {
         //     clearInterval(scrollTimer);
         // }, { passive: false });
+
+        var selectedItem;
+        Array.from(document.getElementsByClassName("pawn")).forEach(function (pawn) {
+            pawn.onclick = function () {
+                setTimeout(() => {
+                    selectedItem = pawn;
+                }, 10);
+            };
+        });
+        document.onclick = function (e) {
+            if (selectedItem) {
+                var evnt = e;
+
+                if (e.touches && e.touches.length > 0) {
+                    evnt = e.touches[0];
+                }
+
+                selectedItem.style.left = evnt.clientX + "px";
+                selectedItem.style.top = evnt.clientY + "px";
+
+                selectedItem = null;
+            }
+        }
 
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
                 .register("{{ url_for('static', filename='sw.js') }}")
-                .then(function () { console.log('Service Worker Registered'); });
+                .then(function () { console.log("Service Worker Registered"); });
         }
     </script>
 </html>
