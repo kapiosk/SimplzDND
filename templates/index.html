@@ -76,6 +76,7 @@
                             <option value="{{ q }}">{{ q.split("/")[-1].split(".")[0] }}</option>
                             {%endfor%}
                         </select>
+                        <button id="openNew">&#x1F855;</button>
                     </li>
                     <li class="sidenav__list-item">
                         <button id="dLeft">&#8592;</button>
@@ -83,16 +84,6 @@
                         <button id="dRight">&#8594;</button>
                         <button id="dDown">&#8595;</button>
                     </li>
-                    {%for q in player_images%}
-                        <li class="sidenav__list-item"></li>
-                            <a href="{{ q }}" target="_blank">{{ q.split("/")[-1].split(".")[0] }}</a>
-                        </li>
-                    {%endfor%}
-                    {%for q in dm_images%}
-                        <li class="sidenav__list-item"></li>
-                            <a href="{{ q }}" target="_blank">{{ q.split("/")[-1].split(".")[0] }}</a>
-                        </li>
-                    {%endfor%}
                 </ul>
             </aside>
             <main class="main">
@@ -204,6 +195,11 @@
         document.getElementById('dRight').onclick = function () { this.blur(); window.scrollBy(300, 0)};
         document.getElementById('dDown').onclick = function () { this.blur(); window.scrollBy(0, 300)};
 
+        document.getElementById('openNew').onclick = function () {
+            this.blur();
+            window.open(document.getElementById("mapSelect").value, "_blank");
+        };
+    
         // var scrollTimer;
         // document.getElementById('dDown').addEventListener("touchstart", function(){
         //     scrollTimer = setInterval(function () { window.scrollBy(0, 100); }, 100);
