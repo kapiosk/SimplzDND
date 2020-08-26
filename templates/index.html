@@ -61,11 +61,15 @@
             .pawn {
                 position: absolute;
                 z-index: 1;
+                background-color: white;
+            }
+
+            #pawnName {
+                width: 50px;
             }
         </style>
     </head>
     <body>
-        <div class="pawn">A</div>
         <div class="grid-container">
             <aside class="sidenav">
                 <ul class="sidenav__list">
@@ -89,6 +93,10 @@
                         <button id="dUp">&#8593;</button>
                         <button id="dRight">&#8594;</button>
                         <button id="dDown">&#8595;</button>
+                    </li>
+                    <li class="sidenav__list-item">
+                        <input id="pawnName" type="text" />
+                        <button id="cPawn" onclick="addPawn();">+</button>
                     </li>
                 </ul>
             </aside>
@@ -215,14 +223,30 @@
         //     clearInterval(scrollTimer);
         // }, { passive: false });
 
+        function addPawn() {
+            let div = document.createElement("div");
+            div.classList.add("pawn");
+            div.innerHTML = document.getElementById("pawnName").value;
+            document.body.insertBefore(div, document.body.firstChild);
+            SP();
+        }
+
         var selectedItem;
-        Array.from(document.getElementsByClassName("pawn")).forEach(function (pawn) {
-            pawn.onclick = function () {
-                setTimeout(() => {
-                    selectedItem = pawn;
-                }, 10);
-            };
-        });
+
+        function SP(){
+            Array.from(document.getElementsByClassName("pawn")).forEach(function (pawn) {
+                pawn.onclick = function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    this.blur();
+                    setTimeout(() => {
+                        selectedItem = pawn;
+                    }, 10);
+                };
+            });
+        }
+        SP();
+
         document.onclick = function (e) {
             if (selectedItem) {
                 var evnt = e;
