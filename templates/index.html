@@ -64,6 +64,7 @@
                 background-color: white;
                 width: 32px;
                 height: 32px;
+                text-align: center;
             }
 
             #pawnName {
@@ -258,8 +259,8 @@
                     evnt = e.touches[0];
                 }
 
-                selectedItem.style.left = evnt.clientX + "px";
-                selectedItem.style.top = evnt.clientY + "px";
+                selectedItem.style.left = (evnt.clientX - selectedItem.offsetWidth / 2) + "px";
+                selectedItem.style.top = (evnt.clientY - selectedItem.offsetHeight / 2) + "px";
 
                 selectedItem = null;
             }
