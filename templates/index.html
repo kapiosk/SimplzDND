@@ -101,6 +101,7 @@
                     <li class="sidenav__list-item">
                         <input id="pawnName" type="text" />
                         <button id="cPawn" onclick="addPawn();">+</button>
+                        <button id="cPawn" onclick="addPresetGroup();">Preset</button>
                     </li>
                 </ul>
             </aside>
@@ -227,12 +228,22 @@
         //     clearInterval(scrollTimer);
         // }, { passive: false });
 
-        function addPawn() {
+        function addPawn(o) {
             let div = document.createElement("div");
             div.classList.add("pawn");
-            div.innerHTML = document.getElementById("pawnName").value;
+            if(o){
+                div.innerHTML = o;
+            }else{
+                div.innerHTML = document.getElementById("pawnName").value;
+            }
             document.getElementById("pawnHolder").appendChild(div);
             SP();
+        }
+
+        function addPresetGroup() {
+            addPawn('G');
+            addPawn('D');
+            addPawn('J');
         }
 
         var selectedItem;
